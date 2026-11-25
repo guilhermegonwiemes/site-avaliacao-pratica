@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persona</title>
+  <link rel="stylesheet" href="css/style_main.css">
+</head>
+<body>
+
+  <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false">
+    SOUND: OFF
+  </button>
+
+  <div class="scroll-track">
+    
+    <div class="sticky-stage">
+      <div class="reveal-stack">
+        <h1 class="word">
+          <span class="syllable per">PER</span><span class="syllable so">SO</span><span class="syllable na">NA</span>
+        </h1>
+        <img
+          src="img/Persona_3_Reload_logo.png"
+          alt="Persona 3 Reload"
+          class="logo-overlay"
+        >
+        <div class="tartarus-layer" aria-hidden="true">
+          <img
+            src="img/tartarus.png"
+            alt="Tartarus"
+            class="tartarus-img"
+          >
+        </div>
+        <div class="velvet-layer">
+          <video
+            id="velvet-video"
+            class="velvet-video"
+            src="video/velvet_elevator.mp4"
+            playsinline
+            preload="auto"
+          ></video>
+        </div>
+      </div>
+      <p id="sound-prompt" class="sound-prompt">Click anywhere to enable voice</p>
+      <p class="scroll-hint">Scroll down</p>
+    </div>
+
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
