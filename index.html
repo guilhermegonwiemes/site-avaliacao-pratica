@@ -1,52 +1,512 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Persona</title>
-  <link rel="stylesheet" href="css/style_main.css">
+  <title>Persona 3 Reload — S.E.E.S.</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false">
-    SOUND: OFF
+    SOM: DESL.
   </button>
 
-  <div class="scroll-track">
-    
+  <main>
+  <!-- ===================== CINEMATIC (scroll-driven) ===================== -->
+  <div class="scroll-track" id="scroll-track">
+
     <div class="sticky-stage">
       <div class="reveal-stack">
-        <h1 class="word">
-          <span class="syllable per">PER</span><span class="syllable so">SO</span><span class="syllable na">NA</span>
+
+        <!-- Act 1: PER - SO - NA -->
+        <h1 class="word tl">
+          <span class="syllable per tl">PER</span><span class="syllable so tl">SO</span><span class="syllable na tl">NA</span>
         </h1>
         <img
           src="img/Persona_3_Reload_logo.png"
           alt="Persona 3 Reload"
-          class="logo-overlay"
+          class="logo-overlay tl"
         >
-        <div class="tartarus-layer" aria-hidden="true">
-          <img
-            src="img/tartarus.png"
-            alt="Tartarus"
-            class="tartarus-img"
-          >
+
+        <!-- Act 2: Tartarus descent (faster) -->
+        <div class="tartarus-layer tl">
+          <img src="img/tartarus.png" alt="Torre de Tartarus erguendo-se sob a lua verde durante a Hora Sombria" class="tartarus-img tl">
         </div>
-        <div class="velvet-layer">
+
+        <!-- Act 2.5: Pure animated Velvet Room door -->
+        <div class="door-layer tl">
           <video
-            id="velvet-video"
+            id="door-video"
             class="velvet-video"
-            src="video/velvet_elevator.mp4"
+            src="video/velvet_door.mp4"
+            muted
             playsinline
             preload="auto"
           ></video>
         </div>
+
+        <!-- Act 3: Velvet Room elevator (scrubbed by scroll) -->
+        <div class="velvet-layer tl">
+          <video
+            id="velvet-video"
+            class="velvet-video"
+            src="video/velvet_elevator.mp4"
+            muted
+            playsinline
+            preload="auto"
+          ></video>
+          <div class="elevator-lights" aria-hidden="true"></div>
+        </div>
+
+        <!-- Act 4: Igor -->
+        <div class="igor-layer tl" id="igor-layer">
+          <div class="igor-bg" aria-hidden="true"></div>
+          <div class="wildcard-text tl" aria-hidden="true">CURINGA</div>
+
+          <div class="igor-figure tl">
+            <img src="img/igor.png" alt="Igor" class="igor-img">
+          </div>
+
+          <div class="dialogue-box" id="dialogue-box" aria-live="polite">
+            <span class="dialogue-name">Igor</span>
+            <p class="dialogue-text" id="dialogue-text"></p>
+            <span class="dialogue-hint">Espa&ccedil;o &middot; Enter &middot; Clique esquerdo</span>
+            <span class="dialogue-next" aria-hidden="true"></span>
+          </div>
+        </div>
+
       </div>
-      <p id="sound-prompt" class="sound-prompt">Click anywhere to enable voice</p>
-      <p class="scroll-hint">Scroll down</p>
+      <p id="sound-prompt" class="sound-prompt">Clique em qualquer lugar para ativar o som</p>
+      <p class="scroll-hint tl">Role para baixo</p>
     </div>
 
   </div>
 
-  <script src="js/main.js"></script>
+  <!-- ===================== S.E.E.S. CONTRACT BOOK FORM ===================== -->
+  <section class="sees" id="sees" aria-labelledby="sees-title">
+    <div class="contract-stage" id="contract-stage">
+      <div class="contract-book" id="contract-book">
+
+        <!-- 3D Book Spine & Front Cover (opens on scroll, closes on submit) -->
+        <div class="book-body" id="book-body">
+          <div class="book-spine" aria-hidden="true"></div>
+
+          <div class="book-cover" id="book-cover" aria-hidden="true">
+            <div class="book-cover-front">
+              <div class="cover-frame">
+                <span class="cover-crest">&#10022;</span>
+                <p class="cover-kicker">Quarto de Veludo &middot; S.E.E.S.</p>
+                <p class="cover-title">Contrato</p>
+                <div class="cover-divider"></div>
+                <p class="cover-quote">&ldquo;Eu escolho este destino por minha pr&oacute;pria e livre vontade.&rdquo;</p>
+              </div>
+            </div>
+            <div class="book-cover-inside"></div>
+          </div>
+
+          <!-- Blue Parchment Contract Page (inspired by the Persona 3 Contract) -->
+          <div class="contract-paper" id="contract-paper">
+            <!-- Top floral filigree border -->
+            <svg class="contract-vine contract-vine-top" viewBox="0 0 800 54" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M24,28 C70,8 120,44 175,26 C225,10 280,40 340,26 C365,20 385,26 392,28"/>
+                <path d="M776,28 C730,8 680,44 625,26 C575,10 520,40 460,26 C435,20 415,26 408,28"/>
+                <path d="M60,34 C85,48 115,44 132,32 M200,22 C222,8 250,12 268,26"/>
+                <path d="M740,34 C715,48 685,44 668,32 M600,22 C578,8 550,12 532,26"/>
+              </g>
+              <g fill="currentColor">
+                <circle cx="175" cy="26" r="5"/>
+                <circle cx="164" cy="18" r="3"/>
+                <circle cx="186" cy="18" r="3"/>
+                <circle cx="166" cy="34" r="3"/>
+                <circle cx="184" cy="34" r="3"/>
+                <circle cx="625" cy="26" r="5"/>
+                <circle cx="614" cy="18" r="3"/>
+                <circle cx="636" cy="18" r="3"/>
+                <circle cx="616" cy="34" r="3"/>
+                <circle cx="634" cy="34" r="3"/>
+                <polygon points="400,14 409,28 400,42 391,28"/>
+                <circle cx="95" cy="24" r="3.2"/>
+                <circle cx="290" cy="28" r="3.2"/>
+                <circle cx="705" cy="24" r="3.2"/>
+                <circle cx="510" cy="28" r="3.2"/>
+              </g>
+            </svg>
+
+            <header class="contract-header">
+              <h2 class="contract-title" id="sees-title">Contrato</h2>
+              <div class="contract-oath">
+                <p>O tempo nunca espera.</p>
+                <p>Ele conduz a todos igualmente ao mesmo fim.</p>
+                <p>Eu, por meio deste, concordo com a declara&ccedil;&atilde;o acima,</p>
+                <p>e escolho este destino por minha pr&oacute;pria e livre vontade.</p>
+              </div>
+              <p class="contract-sub">Col&eacute;gio Gekkoukan &middot; Registro de Admiss&atilde;o da S.E.E.S.</p>
+              <ul class="contract-directives" aria-label="Diretrizes da S.E.E.S.">
+                <li>Comparecer &agrave;s expedi&ccedil;&otilde;es em Tartarus durante a Hora Sombria.</li>
+                <li>Manter sigilo absoluto sobre a exist&ecirc;ncia da S.E.E.S. e das Sombras.</li>
+                <li>Utilizar o Evocador apenas em combate autorizado pelo esquadr&atilde;o.</li>
+              </ul>
+            </header>
+
+            <div id="form-status" class="sees-status" role="alert" aria-live="assertive" hidden></div>
+
+            <form class="sees-form" id="sees-form" novalidate>
+
+              <!-- I. Personal Registry -->
+              <fieldset class="sees-block">
+                <legend class="sees-legend"><span class="sees-num">I.</span> Registro Pessoal</legend>
+
+                <div class="sees-grid">
+                  <label class="sees-field sees-span-2">
+                    <span class="sees-label">Nome completo</span>
+                    <input type="text" name="name" autocomplete="name" required minlength="3"
+                           placeholder="Makoto Yuki">
+                    <span class="sees-error">Por favor, informe seu nome completo.</span>
+                  </label>
+
+                  <label class="sees-field">
+                    <span class="sees-label">Ano</span>
+                    <select name="year" required>
+                      <option value="" disabled selected>Selecione&hellip;</option>
+                      <option value="1">1&ordm; ano</option>
+                      <option value="2">2&ordm; ano</option>
+                      <option value="3">3&ordm; ano</option>
+                    </select>
+                    <span class="sees-error">Escolha seu ano escolar.</span>
+                  </label>
+
+                  <label class="sees-field">
+                    <span class="sees-label">Turma</span>
+                    <input type="text" name="class" required pattern="[A-Fa-f]" maxlength="1"
+                           placeholder="F">
+                    <span class="sees-error">Uma &uacute;nica letra de A a F.</span>
+                  </label>
+
+                  <label class="sees-field">
+                    <span class="sees-label">Data de nascimento</span>
+                    <input type="date" name="birth" required>
+                    <span class="sees-error">Informe sua data de nascimento.</span>
+                  </label>
+
+                  <label class="sees-field">
+                    <span class="sees-label">E-mail</span>
+                    <input type="email" name="email" autocomplete="email" required
+                           placeholder="voce@gekkoukan.jp">
+                    <span class="sees-error">Informe um e-mail v&aacute;lido.</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- II. Dark Hour Screening -->
+              <fieldset class="sees-block">
+                <legend class="sees-legend"><span class="sees-num">II.</span> Triagem da Hora Sombria</legend>
+
+                <div class="sees-question">
+                  <span class="sees-label">Voc&ecirc; permanece consciente &agrave; meia-noite, quando os rel&oacute;gios param?</span>
+                  <div class="sees-pills" role="radiogroup">
+                    <label class="sees-pill"><input type="radio" name="darkhour" value="Sim" required><span>Sim</span></label>
+                    <label class="sees-pill"><input type="radio" name="darkhour" value="Não"><span>N&atilde;o</span></label>
+                    <label class="sees-pill"><input type="radio" name="darkhour" value="Não tenho certeza"><span>N&atilde;o tenho certeza</span></label>
+                  </div>
+                  <span class="sees-error">Responda a esta pergunta.</span>
+                </div>
+
+                <div class="sees-question">
+                  <span class="sees-label">Voc&ecirc; j&aacute; presenciou algum dos fen&ocirc;menos abaixo?</span>
+                  <div class="sees-checks">
+                    <label class="sees-check"><input type="checkbox" name="signs" value="caixoes"><span>Pessoas se transformando em caix&otilde;es</span></label>
+                    <label class="sees-check"><input type="checkbox" name="signs" value="torre"><span>Uma torre no lugar onde deveria estar a escola</span></label>
+                    <label class="sees-check"><input type="checkbox" name="signs" value="lua"><span>Uma lua verde e po&ccedil;as cor de sangue</span></label>
+                    <label class="sees-check"><input type="checkbox" name="signs" value="voz"><span>Uma voz chamando de dentro de um quarto azul</span></label>
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- III. Combat Profile -->
+              <fieldset class="sees-block">
+                <legend class="sees-legend"><span class="sees-num">III.</span> Perfil de Combate</legend>
+
+                <div class="sees-grid">
+                  <label class="sees-field">
+                    <span class="sees-label">Arma preferida</span>
+                    <select name="weapon" required>
+                      <option value="" disabled selected>Selecione&hellip;</option>
+                      <option>Espada de uma m&atilde;o</option>
+                      <option>Espada de duas m&atilde;os</option>
+                      <option>Arco</option>
+                      <option>Luvas</option>
+                      <option>Lan&ccedil;a</option>
+                      <option>Florete</option>
+                      <option>Pistola</option>
+                      <option>Machado</option>
+                    </select>
+                    <span class="sees-error">Escolha uma arma.</span>
+                  </label>
+
+                  <div class="sees-field">
+                    <span class="sees-label">Fun&ccedil;&atilde;o no esquadr&atilde;o</span>
+                    <div class="sees-pills" role="radiogroup">
+                      <label class="sees-pill"><input type="radio" name="role" value="Atacante" required><span>Atacante</span></label>
+                      <label class="sees-pill"><input type="radio" name="role" value="Suporte"><span>Suporte</span></label>
+                      <label class="sees-pill"><input type="radio" name="role" value="Curandeiro"><span>Curandeiro</span></label>
+                      <label class="sees-pill"><input type="radio" name="role" value="Navegador"><span>Navegador</span></label>
+                    </div>
+                    <span class="sees-error">Escolha uma fun&ccedil;&atilde;o.</span>
+                  </div>
+
+                  <label class="sees-field">
+                    <span class="sees-label">N&iacute;vel de aptid&atilde;o (1 a 99)</span>
+                    <input type="number" name="aptitude" min="1" max="99" step="1" required
+                           placeholder="Ex.: 25">
+                    <span class="sees-error">Informe um n&uacute;mero inteiro entre 1 e 99.</span>
+                  </label>
+
+                  <label class="sees-field">
+                    <span class="sees-label">Andar alcan&ccedil;ado em Tartarus (1 a 264)</span>
+                    <input type="number" name="floor" min="1" max="264" step="1" required
+                           placeholder="Ex.: 45">
+                    <span class="sees-error">Informe um n&uacute;mero inteiro entre 1 e 264.</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- IV. Statement of Will -->
+              <fieldset class="sees-block">
+                <legend class="sees-legend"><span class="sees-num">IV.</span> Declara&ccedil;&atilde;o de Vontade</legend>
+                <label class="sees-field">
+                  <span class="sees-label">Por que voc&ecirc; escolhe entrar para a S.E.E.S.?</span>
+                  <textarea name="motivation" rows="3" required minlength="20" maxlength="600"
+                            placeholder="Escreva com suas pr&oacute;prias palavras&hellip;"></textarea>
+                  <span class="sees-counter"><span id="motivation-count">0</span>/600</span>
+                  <span class="sees-error">Escreva pelo menos 20 caracteres.</span>
+                </label>
+              </fieldset>
+
+              <!-- Signature Block (matching the annexed contract image) -->
+              <fieldset class="sees-block sees-signature-block">
+                <legend class="sees-legend signature-heading">Campo de assinatura</legend>
+
+                <div class="sees-field">
+                  <div class="sees-signature">
+                    <canvas id="signature-pad" aria-label="Campo de assinatura, desenhe sua assinatura"></canvas>
+                    <span class="sees-signature-hint" id="signature-hint">Assine na linha</span>
+                    <button type="button" class="sees-clear" id="signature-clear">Limpar</button>
+                  </div>
+                  <input type="hidden" name="signature" id="signature-data">
+                  <span class="sees-error" id="signature-error">Por favor, assine o contrato.</span>
+                </div>
+
+                <label class="sees-check sees-agree">
+                  <input type="checkbox" name="agree" required>
+                  <span>Aceito total responsabilidade pelo meu destino e selo este contrato.</span>
+                </label>
+                <span class="sees-error sees-agree-error">Voc&ecirc; precisa aceitar o contrato.</span>
+              </fieldset>
+
+              <div class="sees-actions">
+                <button type="submit" class="sees-submit" id="sees-submit">
+                  <span>Assinar e Selar Contrato</span>
+                </button>
+                <button type="reset" class="sees-reset">Limpar pergaminho</button>
+              </div>
+            </form>
+
+            <!-- Bottom floral filigree border -->
+            <svg class="contract-vine contract-vine-bottom" viewBox="0 0 800 54" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M24,26 C70,46 120,10 175,28 C225,44 280,14 340,28 C365,34 385,28 392,26"/>
+                <path d="M776,26 C730,46 680,10 625,28 C575,44 520,14 460,28 C435,34 415,28 408,26"/>
+                <path d="M60,20 C85,6 115,10 132,22 M200,32 C222,46 250,42 268,28"/>
+                <path d="M740,20 C715,6 685,10 668,22 M600,32 C578,46 550,42 532,28"/>
+              </g>
+              <g fill="currentColor">
+                <circle cx="175" cy="28" r="5"/>
+                <circle cx="164" cy="20" r="3"/>
+                <circle cx="186" cy="20" r="3"/>
+                <circle cx="166" cy="36" r="3"/>
+                <circle cx="184" cy="36" r="3"/>
+                <circle cx="625" cy="28" r="5"/>
+                <circle cx="614" cy="20" r="3"/>
+                <circle cx="636" cy="20" r="3"/>
+                <circle cx="616" cy="36" r="3"/>
+                <circle cx="634" cy="36" r="3"/>
+                <polygon points="400,12 409,26 400,40 391,26"/>
+                <circle cx="95" cy="30" r="3.2"/>
+                <circle cx="290" cy="26" r="3.2"/>
+                <circle cx="705" cy="30" r="3.2"/>
+                <circle cx="510" cy="26" r="3.2"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Blue Fire Particle & Dissolve Canvas Overlay -->
+        <canvas class="burn-canvas" id="burn-canvas" aria-hidden="true"></canvas>
+      </div>
+    </div>
+
+    <!-- Confirmation card (shown after the contract burns away in blue fire) -->
+    <div class="sees-confirm" id="sees-confirm" hidden>
+      <div class="sees-confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <p class="sees-kicker">Contrato Selado</p>
+        <h3 class="sees-confirm-title" id="confirm-title">Bem-vindo &agrave; S.E.E.S.</h3>
+        <dl class="sees-confirm-data" id="confirm-data"></dl>
+        <p class="sees-confirm-note">
+          Seu contrato se transformou em chamas azuis. Apresente-se no sagu&atilde;o do Dormit&oacute;rio Iwatodai antes da meia-noite.
+        </p>
+        <button type="button" class="sees-confirm-btn" id="confirm-close"><span>Conhecer Seus Companheiros</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== S.E.E.S. ROSTER (unlocked after signing, official 0-9 order) ===================== -->
+  <section class="roster-track" id="roster-track" aria-label="Membros da S.E.E.S." hidden>
+    <div class="roster-sticky">
+      <div class="roster-bg" aria-hidden="true"></div>
+
+      <header class="roster-header">
+        <span class="roster-kicker">Esquadr&atilde;o Especializado de Execu&ccedil;&atilde;o Extracurricular</span>
+        <h2 class="roster-heading">Seus Companheiros da S.E.E.S.</h2>
+      </header>
+
+      <div class="roster-viewport">
+        <div class="roster-rail" id="roster-rail">
+
+          <!-- 0: Mitsuru Kirijo -->
+          <article class="member-card" style="--accent: #ff3b5c;" data-code="00">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Mitsuru-Kirijo.png" alt="Mitsuru Kirijo" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 0</span>
+              <h3 class="member-name">Mitsuru Kirijo</h3>
+              <p class="member-meta">Penthesilea &middot; Estrategista do Esquadr&atilde;o</p>
+            </div>
+          </article>
+
+          <!-- 1: Akihiko Sanada -->
+          <article class="member-card" style="--accent: #9cc4ff;" data-code="01">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Akihiko-Sanada.png" alt="Akihiko Sanada" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 1</span>
+              <h3 class="member-name">Akihiko Sanada</h3>
+              <p class="member-meta">Polydeuces &middot; Capit&atilde;o e Pugilista</p>
+            </div>
+          </article>
+
+          <!-- 2: Shinjiro Aragaki -->
+          <article class="member-card" style="--accent: #c93b5b;" data-code="02">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Shinjiro-Aragaki.png" alt="Shinjiro Aragaki" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 2</span>
+              <h3 class="member-name">Shinjiro Aragaki</h3>
+              <p class="member-meta">Castor &middot; Vanguarda Pesada</p>
+            </div>
+          </article>
+
+          <!-- 3: Makoto Yuki -->
+          <article class="member-card" style="--accent: #5ee6ff;" data-code="03">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Makoto-Yuki.png" alt="Makoto Yuki" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 3</span>
+              <h3 class="member-name">Makoto Yuki</h3>
+              <p class="member-meta">Orpheus &middot; L&iacute;der de Campo</p>
+            </div>
+          </article>
+
+          <!-- 4: Yukari Takeba -->
+          <article class="member-card" style="--accent: #ff4fa3;" data-code="04">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Yukari-Takeba.png" alt="Yukari Takeba" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 4</span>
+              <h3 class="member-name">Yukari Takeba</h3>
+              <p class="member-meta">Io &middot; Arqueira e Curandeira</p>
+            </div>
+          </article>
+
+          <!-- 5: Junpei Iori -->
+          <article class="member-card" style="--accent: #3d8bff;" data-code="05">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Junpei-Iori.png" alt="Junpei Iori" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 5</span>
+              <h3 class="member-name">Junpei Iori</h3>
+              <p class="member-meta">Hermes &middot; Atacante de Linha de Frente</p>
+            </div>
+          </article>
+
+          <!-- 6: Fuuka Yamagishi -->
+          <article class="member-card" style="--accent: #3ef2b6;" data-code="06">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Fuuka-Yamagishi.png" alt="Fuuka Yamagishi" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 6</span>
+              <h3 class="member-name">Fuuka Yamagishi</h3>
+              <p class="member-meta">Lucia &middot; Navegadora T&aacute;tica</p>
+            </div>
+          </article>
+
+          <!-- 7: Aigis -->
+          <article class="member-card" style="--accent: #ffd166;" data-code="07">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Aigis.png" alt="Aigis" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 7</span>
+              <h3 class="member-name">Aigis</h3>
+              <p class="member-meta">Palladion &middot; Arma Anti-Sombra</p>
+            </div>
+          </article>
+
+          <!-- 9: Ken Amada (8 is Koromaru) -->
+          <article class="member-card" style="--accent: #ff9f43;" data-code="09">
+            <div class="member-visual">
+              <div class="member-slash" aria-hidden="true"></div>
+              <img src="img/Ken-Amada.png" alt="Ken Amada" class="member-img">
+            </div>
+            <div class="member-info">
+              <span class="member-num">S.E.E.S - 9</span>
+              <h3 class="member-name">Ken Amada</h3>
+              <p class="member-meta">Nemesis &middot; Lanceiro e Suporte</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <div class="roster-footer" aria-hidden="true">
+        <span class="roster-count" id="roster-count">00 / 09</span>
+        <div class="roster-bar"><span class="roster-bar-fill" id="roster-bar-fill"></span></div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Projeto escolar tem&aacute;tico inspirado em <strong>Persona 3 Reload</strong> (ATLUS / SEGA) &mdash; uso exclusivamente educacional.</p>
+    <p>S.E.E.S. &middot; Dormit&oacute;rio Iwatodai &middot; Col&eacute;gio Gekkoukan</p>
+  </footer>
+
+  <script src="js/script.js"></script>
 </body>
 </html>
