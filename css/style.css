@@ -1,0 +1,1499 @@
+@import url('https://fonts.cdnfonts.com/css/bm-space');
+@import url('https://www.cufonfonts.com/font/fot-newrodin-pro');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* =====================================================================
+   SCROLL-DRIVEN TIMELINE
+   ---------------------------------------------------------------------
+   Full cinematic = 26 s at maximum scroll speed (1% = 0.26 s):
+     0.30s  PER           |  7.75s  Pure animated Velvet Door (3.5s)
+     1.30s  SO            | 11.05s  Velvet Room elevator (10s)
+     2.60s  NA            | 20.40s  Igor scene fades in
+     3.38s  P3R logo      | 22.80s  Interactive Igor dialogue (manual advance)
+     5.35s  Tartarus fast | 24.70s  Igor fades out -> S.E.E.S. roster
+   ===================================================================== */
+.tl {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  animation-delay: calc(var(--p, 0) * -1s);
+  animation-timing-function: linear;
+}
+
+.scroll-track {
+  height: 1100vh;
+  position: relative;
+  font-family: 'BM space', sans-serif;
+}
+
+/* Locks the content to the viewport while scrolling */
+.sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.reveal-stack {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------- Act 1 ---------------------------- */
+.word {
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex;
+  position: relative;
+  z-index: 1;
+  animation-name: fade-word;
+}
+
+.syllable {
+  opacity: 0;
+  transform: translateY(20px);
+  display: inline-block;
+  animation-timing-function: ease-out;
+  transition: text-shadow 0.35s ease;
+}
+
+.per { animation-name: reveal-per; }
+.so  { animation-name: reveal-so; }
+.na  { animation-name: reveal-na; }
+
+/* PER 0.30s -> 1.05s */
+@keyframes reveal-per {
+  0%, 1.15% { opacity: 0; transform: translateY(20px); }
+  4.04%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* SO 1.30s -> 2.03s */
+@keyframes reveal-so {
+  0%, 5.00% { opacity: 0; transform: translateY(20px); }
+  7.81%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* NA 2.60s -> 3.30s */
+@keyframes reveal-na {
+  0%, 10.00% { opacity: 0; transform: translateY(20px); }
+  12.69%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Word fades as the logo takes over (3.45s -> 4.13s) */
+@keyframes fade-word {
+  0%, 13.27% { opacity: 1; transform: scale(1); }
+  15.88%, 100% { opacity: 0; transform: scale(0.96); }
+}
+
+.syllable.is-speaking {
+  text-shadow: 0 0 24px rgba(94, 230, 255, 0.8);
+}
+
+.logo-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(76vw, 620px);
+  max-height: 70vh;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  animation-name: reveal-logo;
+  animation-timing-function: ease-out;
+}
+
+/* Logo in 3.38s -> 4.28s, hold to 4.88s, out by 5.55s */
+@keyframes reveal-logo {
+  0%, 13.00% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+    filter: blur(8px);
+  }
+  16.46%, 18.77% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px) drop-shadow(0 0 28px rgba(0, 180, 255, 0.35));
+  }
+  21.35%, 100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.06);
+    filter: blur(6px);
+  }
+}
+
+/* ---------------------------- Act 2 (Faster Tartarus) ---------------------------- */
+.tartarus-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  background-color: #000000;
+  animation-name: fade-tartarus;
+}
+
+/* In 5.35s -> 5.80s, out 7.45s -> 7.95s */
+@keyframes fade-tartarus {
+  0%, 20.58% { opacity: 0; }
+  22.31%, 28.65% { opacity: 1; }
+  30.58%, 100% { opacity: 0; }
+}
+
+.tartarus-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 180vh;
+  height: auto;
+  object-fit: cover;
+  object-position: center top;
+  will-change: transform;
+  animation-name: descend-tartarus;
+}
+
+/* Brisk pan from top of tower to its base (5.50s -> 7.80s) */
+@keyframes descend-tartarus {
+  0%, 21.15% { transform: translateY(0); }
+  30.00%, 100% { transform: translateY(calc(100vh - 100%)); }
+}
+
+/* ---------------------------- Act 2.5 (Pure Animated Velvet Door) ---------------------------- */
+.door-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background-color: #000000;
+  pointer-events: none;
+  opacity: 0;
+  animation-name: fade-door;
+}
+
+/* In 7.65s -> 8.15s, out 10.75s -> 11.35s */
+@keyframes fade-door {
+  0%, 29.42% { opacity: 0; }
+  31.35%, 41.35% { opacity: 1; }
+  43.65%, 100% { opacity: 0; }
+}
+
+/* ---------------------------- Act 3 (Velvet Elevator) ---------------------------- */
+.velvet-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background-color: #000000;
+  pointer-events: none;
+  opacity: 0;
+  animation-name: fade-velvet;
+}
+
+/* In 10.95s -> 11.55s, stays until Igor covers it */
+@keyframes fade-velvet {
+  0%, 42.12% { opacity: 0; }
+  44.42%, 100% { opacity: 1; }
+}
+
+.velvet-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Soft light bands sliding down = the elevator keeps rising */
+.elevator-lights {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 22vh,
+    rgba(120, 170, 255, 0.07) 26vh,
+    transparent 30vh
+  );
+  background-size: 100% 60vh;
+  mix-blend-mode: screen;
+  animation: elevator-rise 2.4s linear infinite;
+}
+
+@keyframes elevator-rise {
+  from { background-position: 0 0; }
+  to { background-position: 0 60vh; }
+}
+
+/* ---------------------------- Act 4 ---------------------------- */
+.igor-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #02051a;
+  animation-name: fade-igor;
+}
+
+/* In 20.4s -> 21.4s, out 24.7s -> 25.9s (after interactive dialogue finishes) */
+@keyframes fade-igor {
+  0%, 78.46% { opacity: 0; }
+  82.31%, 95.00% { opacity: 1; }
+  99.60%, 100% { opacity: 0; }
+}
+
+.igor-bg {
+  position: absolute;
+  inset: -40px;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(40, 70, 255, 0.35), transparent 60%),
+    linear-gradient(to top, rgba(2, 5, 26, 0.95) 0%, rgba(2, 5, 26, 0.35) 55%, rgba(2, 5, 26, 0.7) 100%),
+    url('../img/velvet_bg.jpg') center / cover no-repeat;
+  filter: blur(6px) saturate(1.3) hue-rotate(8deg);
+  transform: scale(1.1);
+}
+
+.wildcard-text {
+  position: absolute;
+  left: 50%;
+  top: 12vh;
+  font-family: 'BM space', sans-serif;
+  font-size: clamp(3.6rem, 13vw, 12.5rem);
+  line-height: 0.85;
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(94, 230, 255, 0.55);
+  text-align: center;
+  opacity: 0;
+  white-space: nowrap;
+  transform: translateX(-50%) scale(0.92);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Triggered cleanly by JS when Igor reaches the Wild Card lines */
+.igor-layer.is-wildcard .wildcard-text {
+  opacity: 0.65;
+  transform: translateX(-50%) scale(1);
+}
+
+.igor-figure {
+  position: absolute;
+  left: 4vw;
+  bottom: 0;
+  width: min(46vw, 560px);
+  opacity: 0;
+  animation-name: igor-enter;
+  animation-timing-function: ease-out;
+}
+
+/* Igor slides in 20.8s -> 22.0s */
+@keyframes igor-enter {
+  0%, 80.00% { opacity: 0; transform: translateX(-8vw); }
+  84.62%, 100% { opacity: 1; transform: translateX(0); }
+}
+
+.igor-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 40px rgba(40, 90, 255, 0.45));
+  animation: igor-float 5s ease-in-out infinite;
+}
+
+@keyframes igor-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* P3R-style dialogue box */
+.dialogue-box {
+  position: absolute;
+  left: 50%;
+  bottom: 6vh;
+  width: min(880px, 90vw);
+  min-height: 140px;
+  padding: 2.2rem 2.4rem 1.6rem;
+  transform: translateX(-50%) translateY(16px);
+  background: linear-gradient(135deg, rgba(4, 16, 54, 0.94), rgba(6, 34, 96, 0.9));
+  border: 2px solid rgba(94, 230, 255, 0.7);
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 96% 100%, 0 100%);
+  box-shadow: 0 0 40px rgba(18, 140, 255, 0.35);
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.dialogue-box.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dialogue-name {
+  position: absolute;
+  top: -2px;
+  left: 1.6rem;
+  padding: 0.3rem 1.4rem;
+  background: #5ee6ff;
+  color: #02051a;
+  font-family: 'BM space', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transform: skewX(-14deg);
+}
+
+.dialogue-text {
+  font-family: 'FOT-NewRodin Pro', 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  line-height: 1.55;
+  color: #f2f6ff;
+  min-height: 3.1em;
+}
+
+.dialogue-hint {
+  position: absolute;
+  left: 2.4rem;
+  bottom: 0.85rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(94, 230, 255, 0.65);
+}
+
+.dialogue-next {
+  position: absolute;
+  right: 3.4rem;
+  bottom: 1rem;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #5ee6ff;
+  opacity: 0;
+}
+
+.dialogue-box.is-complete .dialogue-next {
+  opacity: 1;
+  animation: next-bounce 0.9s ease-in-out infinite;
+}
+
+@keyframes next-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* ------------------------- UI chrome ------------------------- */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #666;
+  animation-name: fade-hint;
+}
+
+@keyframes fade-hint {
+  0% { opacity: 1; }
+  3.4%, 100% { opacity: 0; }
+}
+
+.sound-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.35);
+  color: #888;
+  border: 1px solid #333;
+  padding: 0.45rem 0.9rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sound-toggle:hover {
+  color: #fff;
+  border-color: #777;
+}
+
+.sound-toggle.is-on {
+  color: #5ee6ff;
+  border-color: #5ee6ff;
+  box-shadow: 0 0 12px rgba(94, 230, 255, 0.25);
+}
+
+.sound-prompt {
+  position: absolute;
+  bottom: 4rem;
+  z-index: 10;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #5ee6ff;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.sound-prompt.is-hidden {
+  opacity: 0;
+}
+
+.sound-prompt.is-attention {
+  transform: scale(1.06);
+  opacity: 1;
+}
+
+@media (max-width: 720px) {
+  .igor-figure {
+    width: 78vw;
+    left: 50%;
+    bottom: 26vh;
+    margin-left: -39vw;
+  }
+
+  .dialogue-box {
+    padding: 2rem 1.4rem 1.4rem;
+  }
+}
+
+/* =====================================================================
+   S.E.E.S. ROSTER SHOWCASE (between Velvet Room & Admission Form)
+   ===================================================================== */
+.roster-track {
+  position: relative;
+  height: 720vh;
+  background: #02061a;
+}
+
+.roster-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.8rem 0 2.4rem;
+}
+
+.roster-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(25, 184, 255, 0.16), transparent 62%),
+    repeating-linear-gradient(
+      115deg,
+      transparent 0 110px,
+      rgba(94, 230, 255, 0.04) 110px 112px
+    ),
+    linear-gradient(180deg, #000000 0%, #030c2b 20%, #04123a 80%, #000000 100%);
+  pointer-events: none;
+}
+
+.roster-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.roster-kicker {
+  display: inline-block;
+  padding: 0.28rem 1rem;
+  background: #5ee6ff;
+  color: #02061a;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  transform: skewX(-14deg);
+}
+
+.roster-heading {
+  margin-top: 0.7rem;
+  font-family: 'BM space', sans-serif;
+  font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 4px 4px 0 #0b2f8a;
+}
+
+.roster-viewport {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.roster-rail {
+  display: flex;
+  align-items: center;
+  will-change: transform;
+  transform: translate3d(calc(var(--rp, 0) * -800vw), 0, 0);
+}
+
+.member-card {
+  flex: 0 0 100vw;
+  padding: 0 8vw;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 3vw;
+}
+
+.member-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: min(62vh, 520px);
+}
+
+.member-slash {
+  position: absolute;
+  width: 82%;
+  height: 76%;
+  background: linear-gradient(135deg, var(--accent, #5ee6ff), rgba(6, 20, 64, 0.2));
+  opacity: 0.26;
+  transform: skewX(-16deg) rotate(-3deg);
+  box-shadow: 0 0 60px color-mix(in srgb, var(--accent, #5ee6ff) 45%, transparent);
+}
+
+.member-img {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 22px color-mix(in srgb, var(--accent, #5ee6ff) 35%, transparent));
+}
+
+.member-info {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.member-num {
+  display: inline-block;
+  padding: 0.22rem 0.85rem;
+  background: var(--accent, #5ee6ff);
+  color: #02061a;
+  font-family: 'BM space', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  transform: skewX(-14deg);
+}
+
+.member-name {
+  font-family: 'BM space', sans-serif;
+  font-size: clamp(2rem, 4.8vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-shadow: 5px 5px 0 rgba(11, 47, 138, 0.85);
+}
+
+.member-meta {
+  font-family: 'FOT-NewRodin Pro', 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(0.9rem, 1.3vw, 1.15rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent, #5ee6ff);
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--accent, #5ee6ff);
+}
+
+.roster-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.roster-count {
+  font-family: 'BM space', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  color: #5ee6ff;
+  white-space: nowrap;
+}
+
+.roster-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(94, 230, 255, 0.18);
+  overflow: hidden;
+  transform: skewX(-18deg);
+}
+
+.roster-bar-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #19b8ff, #5ee6ff);
+  transform-origin: left center;
+  transform: scaleX(0.125);
+}
+
+@media (max-width: 780px) {
+  .member-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.2rem;
+    padding: 0 7vw;
+  }
+
+  .member-visual {
+    height: 44vh;
+  }
+
+  .member-info {
+    align-items: center;
+  }
+
+  .member-meta {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+/* =====================================================================
+   VELVET ROOM CONTRACT BOOK & BLUE-FIRE DISSOLVE
+   Inspired by the classic Persona 3 cerulean parchment Contract
+   ===================================================================== */
+:root {
+  --contract-paper-top: #6da8e3;
+  --contract-paper-mid: #5f9bd8;
+  --contract-paper-bot: #4f8ac9;
+  --contract-ink: #0a1529;
+  --contract-ink-soft: rgba(10, 21, 41, 0.72);
+  --contract-line: rgba(10, 21, 41, 0.38);
+  --contract-error: #8c0c24;
+  --velvet-navy: #040d29;
+  --velvet-cover: #091c4f;
+  --velvet-gold: #d6b873;
+  --velvet-cyan: #5ee6ff;
+}
+
+.sees {
+  position: relative;
+  min-height: 120vh;
+  padding: 12vh 4vw 14vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    linear-gradient(to bottom, #000000 0, transparent 14vh),
+    radial-gradient(ellipse at 50% 30%, rgba(25, 130, 255, 0.22), transparent 62%),
+    radial-gradient(ellipse at 50% 85%, rgba(12, 48, 145, 0.28), transparent 65%),
+    linear-gradient(180deg, #02061a 0%, #051133 55%, #020514 100%);
+}
+
+/* 3D Perspective Stage */
+.contract-stage {
+  position: relative;
+  width: min(760px, 100%);
+  perspective: 2400px;
+}
+
+.contract-book {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Book body clips upward during the blue-fire bottom-to-top dissolve */
+.book-body {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  clip-path: inset(0 0 var(--burn, 0%) 0);
+  box-shadow:
+    0 32px 70px rgba(0, 0, 0, 0.72),
+    0 0 50px rgba(32, 130, 255, 0.22);
+}
+
+.contract-book.is-burning .book-body::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: var(--burn, 0%);
+  height: 18px;
+  background: linear-gradient(
+    to top,
+    #ffffff 0%,
+    #5ee6ff 35%,
+    rgba(20, 120, 255, 0.8) 70%,
+    transparent 100%
+  );
+  filter: blur(4px);
+  z-index: 25;
+  pointer-events: none;
+}
+
+.book-spine {
+  position: absolute;
+  top: 0;
+  left: -14px;
+  width: 16px;
+  height: 100%;
+  background: linear-gradient(90deg, #02081b, #0e286b 55%, #040d29);
+  border-radius: 4px 0 0 4px;
+  box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.6);
+  z-index: 3;
+}
+
+/* -------------------- 3D Front Cover -------------------- */
+.book-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 1.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  pointer-events: auto;
+}
+
+.contract-book.is-open .book-cover {
+  transform: rotateY(-165deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 1.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease 0.7s;
+}
+
+.contract-book.is-closing .book-cover {
+  transform: rotateY(0deg);
+  opacity: 1;
+  pointer-events: auto;
+  transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+}
+
+.book-cover-front,
+.book-cover-inside {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 2px 8px 8px 2px;
+}
+
+.book-cover-front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.2rem;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(45, 110, 235, 0.28), transparent 60%),
+    linear-gradient(145deg, #0a1f5c 0%, #051034 55%, #03091f 100%);
+  border: 2px solid rgba(214, 184, 115, 0.55);
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.65);
+}
+
+.book-cover-inside {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #0b1c47, #06102d);
+  border: 1px solid rgba(214, 184, 115, 0.3);
+}
+
+.cover-frame {
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  border: 1px solid rgba(214, 184, 115, 0.45);
+  outline: 1px solid rgba(214, 184, 115, 0.22);
+  outline-offset: 8px;
+}
+
+.cover-crest {
+  font-size: 2.2rem;
+  color: var(--velvet-gold);
+  text-shadow: 0 0 18px rgba(94, 230, 255, 0.45);
+  margin-bottom: 1.2rem;
+}
+
+.cover-kicker {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(214, 184, 115, 0.85);
+}
+
+.cover-title {
+  margin-top: 1rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(2.6rem, 7vw, 4.2rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--velvet-gold);
+  text-shadow: 0 2px 18px rgba(214, 184, 115, 0.25);
+}
+
+.cover-divider {
+  width: 110px;
+  height: 1px;
+  margin: 1.6rem 0;
+  background: linear-gradient(90deg, transparent, var(--velvet-gold), transparent);
+}
+
+.cover-quote {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(235, 242, 255, 0.78);
+}
+
+/* -------------------- Blue Parchment Contract Paper -------------------- */
+.contract-paper {
+  position: relative;
+  padding: 2.2rem 3.2rem 2.4rem;
+  color: var(--contract-ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  border-radius: 2px 6px 6px 2px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(185, 224, 255, 0.35), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(35, 86, 155, 0.35), transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(180deg, var(--contract-paper-top) 0%, var(--contract-paper-mid) 52%, var(--contract-paper-bot) 100%);
+  box-shadow:
+    inset 18px 0 28px rgba(10, 26, 66, 0.22),
+    inset 0 0 42px rgba(14, 42, 96, 0.24),
+    inset 0 0 0 1px rgba(10, 21, 41, 0.28);
+}
+
+.contract-vine {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: rgba(11, 24, 52, 0.85);
+  user-select: none;
+}
+
+.contract-vine-top {
+  margin-bottom: 1rem;
+}
+
+.contract-vine-bottom {
+  margin-top: 2rem;
+}
+
+/* Header matching the annexed Persona 3 Contract */
+.contract-header {
+  text-align: center;
+  margin-bottom: 2.2rem;
+}
+
+.contract-title {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(2.6rem, 6vw, 3.8rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--contract-ink);
+  margin-bottom: 1.1rem;
+}
+
+.contract-oath {
+  max-width: 520px;
+  margin: 0 auto 1.3rem;
+  text-align: left;
+  font-size: clamp(1.08rem, 1.8vw, 1.24rem);
+  line-height: 1.55;
+  font-weight: 600;
+  color: var(--contract-ink);
+}
+
+.contract-sub {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--contract-ink-soft);
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--contract-line);
+}
+
+/* -------------------- Form Controls on Parchment -------------------- */
+.sees-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+}
+
+.sees-block {
+  border: none;
+  padding: 1.3rem 0 0;
+  border-top: 1px solid rgba(10, 21, 41, 0.22);
+}
+
+.sees-block:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.sees-legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--contract-ink);
+}
+
+.sees-legend + * {
+  clear: both;
+}
+
+.sees-num {
+  margin-right: 0.35rem;
+  opacity: 0.7;
+}
+
+.signature-heading {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.sees-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem 1.6rem;
+}
+
+.sees-span-2 {
+  grid-column: span 2;
+}
+
+.sees-field,
+.sees-question {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sees-question + .sees-question {
+  margin-top: 1.2rem;
+}
+
+.sees-label {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--contract-ink-soft);
+}
+
+.sees-form input[type='text'],
+.sees-form input[type='email'],
+.sees-form input[type='date'],
+.sees-form select,
+.sees-form textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--contract-ink);
+  background: rgba(230, 244, 255, 0.28);
+  border: none;
+  border-bottom: 1.5px solid rgba(10, 21, 41, 0.55);
+  border-radius: 0;
+  outline: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.sees-form textarea {
+  resize: vertical;
+  min-height: 92px;
+  line-height: 1.5;
+}
+
+.sees-form select {
+  appearance: none;
+  cursor: pointer;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--contract-ink) 50%),
+    linear-gradient(135deg, var(--contract-ink) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 52%, calc(100% - 12px) 52%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.sees-form select option {
+  background: #6da8e3;
+  color: var(--contract-ink);
+}
+
+.sees-form input::placeholder,
+.sees-form textarea::placeholder {
+  color: rgba(10, 21, 41, 0.42);
+  font-style: italic;
+}
+
+.sees-form input:focus,
+.sees-form select:focus,
+.sees-form textarea:focus {
+  background: rgba(235, 247, 255, 0.52);
+  border-bottom-color: #040d29;
+}
+
+.sees-counter {
+  align-self: flex-end;
+  font-size: 0.85rem;
+  color: var(--contract-ink-soft);
+}
+
+/* Radio pills */
+.sees-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.sees-pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sees-pill span {
+  display: inline-block;
+  padding: 0.38rem 1rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--contract-ink);
+  border: 1px solid rgba(10, 21, 41, 0.5);
+  background: rgba(230, 244, 255, 0.18);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sees-pill:hover span {
+  background: rgba(10, 21, 41, 0.14);
+}
+
+.sees-pill input:checked + span {
+  background: var(--contract-ink);
+  color: #cbe6ff;
+  border-color: var(--contract-ink);
+}
+
+/* Checkboxes */
+.sees-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 1.2rem;
+}
+
+.sees-check {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--contract-ink);
+}
+
+.sees-check input {
+  position: absolute;
+  opacity: 0;
+}
+
+.sees-check span {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.sees-check span::before {
+  content: '';
+  flex: 0 0 15px;
+  height: 15px;
+  margin-top: 0.25rem;
+  border: 1.5px solid var(--contract-ink);
+  transform: rotate(45deg) scale(0.85);
+  transition: background 0.2s ease;
+}
+
+.sees-check input:checked + span::before {
+  background: var(--contract-ink);
+}
+
+/* Signature pad matching the annexed contract's signature line */
+.sees-signature {
+  position: relative;
+  height: 130px;
+  background:
+    linear-gradient(to top, rgba(10, 21, 41, 0.65) 0 1.5px, transparent 1.5px) 0 calc(100% - 26px) / 100% 100% no-repeat,
+    rgba(225, 242, 255, 0.22);
+  border: 1px dashed rgba(10, 21, 41, 0.28);
+}
+
+.sees-signature canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.sees-signature-hint {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.35rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(10, 21, 41, 0.48);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.sees-signature.has-ink .sees-signature-hint {
+  opacity: 0;
+}
+
+.sees-clear {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.7rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #cbe6ff;
+  background: rgba(10, 21, 41, 0.85);
+  border: none;
+  cursor: pointer;
+}
+
+.sees-agree {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Validation errors */
+.sees-error {
+  display: none;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--contract-error);
+}
+
+.is-invalid > .sees-error,
+.is-invalid + .sees-error,
+.sees-field.is-invalid .sees-error {
+  display: block;
+}
+
+.sees-field.is-invalid input,
+.sees-field.is-invalid select,
+.sees-field.is-invalid textarea {
+  border-bottom-color: var(--contract-error);
+}
+
+.sees-signature.is-invalid {
+  border-color: var(--contract-error);
+}
+
+/* Submit & Reset */
+.sees-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+
+.sees-submit {
+  padding: 0.95rem 2.6rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #d6ecff;
+  background: linear-gradient(135deg, #0a1b45, #040d29);
+  border: 1.5px solid rgba(214, 184, 115, 0.75);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(4, 13, 41, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.sees-submit:hover {
+  background: linear-gradient(135deg, #102a6b, #07163e);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(4, 13, 41, 0.48), 0 0 18px rgba(94, 230, 255, 0.35);
+}
+
+.sees-reset {
+  padding: 0.45rem 0;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--contract-ink-soft);
+  background: none;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+}
+
+.sees-reset:hover {
+  color: var(--contract-ink);
+}
+
+/* Blue Fire Canvas Overlay */
+.burn-canvas {
+  position: absolute;
+  inset: -60px -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 120px);
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* Confirmation Modal */
+.sees-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(1, 4, 18, 0.84);
+  backdrop-filter: blur(6px);
+  animation: confirm-fade 0.4s ease both;
+}
+
+.sees-confirm[hidden] {
+  display: none;
+}
+
+.sees-confirm-card {
+  width: min(540px, 100%);
+  padding: 2.5rem 2.3rem;
+  color: #f2f7ff;
+  background: linear-gradient(150deg, #0b2f8a, #030a24);
+  clip-path: polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 36px 100%, 0 calc(100% - 36px));
+  box-shadow: inset 0 0 0 1px rgba(94, 230, 255, 0.4), 0 0 48px rgba(25, 184, 255, 0.25);
+  animation: confirm-pop 0.45s cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+
+.sees-kicker {
+  display: inline-block;
+  padding: 0.28rem 0.9rem;
+  background: #5ee6ff;
+  color: #030a24;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  transform: skewX(-14deg);
+}
+
+.sees-confirm-title {
+  margin: 1rem 0 1.5rem;
+  font-family: 'BM space', sans-serif;
+  font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.sees-confirm-data {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem 1.4rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.96rem;
+}
+
+.sees-confirm-data dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5ee6ff;
+  align-self: center;
+}
+
+.sees-confirm-note {
+  margin-bottom: 1.8rem;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: rgba(242, 247, 255, 0.78);
+}
+
+.sees-confirm-btn {
+  padding: 0.9rem 2.4rem;
+  font-family: 'BM space', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #030a24;
+  background: #5ee6ff;
+  border: none;
+  cursor: pointer;
+  transform: skewX(-14deg);
+  box-shadow: 6px 6px 0 #0b2f8a;
+}
+
+.sees-confirm-btn span {
+  display: inline-block;
+  transform: skewX(14deg);
+}
+
+@keyframes confirm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes confirm-pop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 720px) {
+  .contract-paper {
+    padding: 1.6rem 1.3rem 1.8rem;
+  }
+
+  .sees-grid,
+  .sees-checks {
+    grid-template-columns: 1fr;
+  }
+
+  .sees-span-2 {
+    grid-column: auto;
+  }
+}
+
+/* Numeric input styling on blue parchment */
+.sees-form input[type='number'] {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--contract-ink);
+  background: rgba(230, 244, 255, 0.28);
+  border: none;
+  border-bottom: 1.5px solid rgba(10, 21, 41, 0.55);
+  border-radius: 0;
+  outline: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.sees-form input[type='number']:focus {
+  background: rgba(235, 247, 255, 0.52);
+  border-bottom-color: #040d29;
+}
+
+/* S.E.E.S. directives list inside the Contract header */
+.contract-directives {
+  max-width: 520px;
+  margin: 1rem auto 0;
+  padding-left: 1.25rem;
+  text-align: left;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--contract-ink-soft);
+}
+
+.contract-directives li + li {
+  margin-top: 0.25rem;
+}
+
+/* Form-level exception / error banner */
+.sees-status {
+  margin-bottom: 1.4rem;
+  padding: 0.8rem 1rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #fff2f4;
+  background: rgba(140, 12, 36, 0.92);
+  border-left: 4px solid #ff708d;
+}
+
+/* Semantic site footer */
+.site-footer {
+  padding: 2.4rem 5vw;
+  text-align: center;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: rgba(242, 247, 255, 0.65);
+  background: #020514;
+  border-top: 1px solid rgba(94, 230, 255, 0.16);
+}
+
+.site-footer strong {
+  color: #5ee6ff;
+}
